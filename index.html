@@ -4,255 +4,280 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CARSTING | あなたの愛車を、映像作品の主役に。</title>
-  <meta name="description" content="MV・PV撮影にあなたの愛車を。カスタムカー・スポーツカー・旧車オーナー向け無料マッチング登録。プロの映像作品に愛車が出演するチャンス。">
-  <meta name="theme-color" content="#0a0a0f">
+  <title>CARSTING | あなたの愛車を、クリエイティブの主役に。</title>
+  <meta name="description" content="CARSTING - MV・PV撮影用の車両マッチングサービス。カーオーナーと映像制作会社をつなぎます。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&family=Oswald:wght@400;600;700&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-dark: #0a0a0f;
+      --bg-card: rgba(255, 255, 255, 0.04);
+      --accent-cyan: #00e5ff;
+      --accent-amber: #ffab00;
+      --text-primary: #f0f0f5;
+      --text-muted: rgba(255, 255, 255, 0.5);
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Background animation */
+    .bg-glow {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .bg-glow::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at 30% 50%, rgba(0, 229, 255, 0.06) 0%, transparent 60%),
+                  radial-gradient(ellipse at 70% 50%, rgba(255, 171, 0, 0.05) 0%, transparent 60%);
+      animation: bgShift 12s ease-in-out infinite alternate;
+    }
+    @keyframes bgShift {
+      0%   { transform: translate(0, 0) rotate(0deg); }
+      100% { transform: translate(2%, -2%) rotate(3deg); }
+    }
+
+    /* Gateway container */
+    .gateway {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 20px;
+      max-width: 720px;
+      width: 100%;
+      animation: fadeInUp 0.8s ease-out both;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .gateway-logo {
+      width: 180px;
+      margin: 0 auto 16px;
+    }
+    .gateway-logo img {
+      width: 100%;
+      height: auto;
+    }
+
+    .gateway-tagline {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.35em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+
+    .gateway-heading {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .gateway-sub {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 48px;
+    }
+
+    /* Cards */
+    .gateway-cards {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .gateway-card {
+      flex: 1;
+      max-width: 300px;
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 40px 28px 36px;
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gateway-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .gateway-card--owner::before {
+      background: radial-gradient(ellipse at center, rgba(0, 229, 255, 0.08) 0%, transparent 70%);
+    }
+    .gateway-card--company::before {
+      background: radial-gradient(ellipse at center, rgba(255, 171, 0, 0.08) 0%, transparent 70%);
+    }
+
+    .gateway-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+    .gateway-card--owner:hover {
+      border-color: rgba(0, 229, 255, 0.3);
+    }
+    .gateway-card--company:hover {
+      border-color: rgba(255, 171, 0, 0.3);
+    }
+    .gateway-card:hover::before {
+      opacity: 1;
+    }
+
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .gateway-card--owner .card-icon {
+      background: rgba(0, 229, 255, 0.1);
+      color: var(--accent-cyan);
+    }
+    .gateway-card--company .card-icon {
+      background: rgba(255, 171, 0, 0.1);
+      color: var(--accent-amber);
+    }
+    .card-icon svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .card-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+    }
+    .card-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .card-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      transition: gap 0.3s ease;
+    }
+    .gateway-card--owner .card-arrow { color: var(--accent-cyan); }
+    .gateway-card--company .card-arrow { color: var(--accent-amber); }
+
+    .gateway-card:hover .card-arrow { gap: 12px; }
+
+    .card-arrow svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .gateway-cards {
+        flex-direction: column;
+        align-items: center;
+      }
+      .gateway-card {
+        max-width: 100%;
+      }
+      .gateway-heading {
+        font-size: 1.25rem;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <div class="bg-glow"></div>
 
-  <!-- ========== Header ========== -->
-  <header class="site-header" id="header">
-    <a href="index.html" class="logo"><img src="assets/images/logo.png" alt="CARSTING"></a>
-    <nav class="header-nav">
-      <a href="index.html" class="header-nav-link active">オーナーの方</a>
-      <a href="btob.html" class="header-nav-link">制作会社の方</a>
-    </nav>
-    <a href="#cta" class="header-cta">無料エントリー</a>
-  </header>
-
-  <!-- ========== Hero ========== -->
-  <section class="hero" id="hero">
-    <div class="hero-bg">
-      <img src="assets/images/hero.png" alt="撮影スタジオに佇むカスタムカー" width="1200" height="800">
+  <div class="gateway">
+    <div class="gateway-logo">
+      <img src="assets/images/logo.png" alt="CARSTING">
     </div>
-    <div class="hero-content">
-      <span class="hero-eyecatch">Match your car. Get noticed.</span>
-      <h1 class="hero-title">
-        YOUR <span class="highlight">RIDE</span>.<br>
-        THE SPOTLIGHT.
-      </h1>
-      <p class="hero-subtitle">あなたの愛車が、次のヒット曲を彩る。<br>MV・PV撮影 × カーオーナー マッチング。</p>
-      <a href="#cta" class="hero-cta" id="hero-cta-btn">
-        無料オーナー登録
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-          stroke-linejoin="round">
-          <path d="M5 12h14" />
-          <path d="m12 5 7 7-7 7" />
-        </svg>
+    <p class="gateway-tagline">Car × Casting for Creatives</p>
+
+    <h1 class="gateway-heading">あなたはどちらですか？</h1>
+    <p class="gateway-sub">ご利用目的に合わせてご案内いたします。</p>
+
+    <div class="gateway-cards">
+      <!-- Owner Card -->
+      <a href="owner.html" class="gateway-card gateway-card--owner" id="gateway-owner">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+            <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+            <path d="M5 17H3v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0H9"/>
+            <path d="M10 6l-1 5h7"/>
+          </svg>
+        </div>
+        <h2 class="card-title">愛車を貸したい</h2>
+        <p class="card-desc">あなたの愛車をMV・PV・CM撮影に提供して、<br>撮影謝礼を受け取りましょう。</p>
+        <span class="card-arrow">
+          オーナー登録へ
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+          </svg>
+        </span>
+      </a>
+
+      <!-- Company Card -->
+      <a href="btob.html" class="gateway-card gateway-card--company" id="gateway-company">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 10l4.553 -2.276A1 1 0 0 1 21 8.618v6.764a1 1 0 0 1 -1.447 .894L15 14v-4z"/>
+            <rect x="3" y="6" width="12" height="12" rx="2"/>
+          </svg>
+        </div>
+        <h2 class="card-title">撮影車両を探す</h2>
+        <p class="card-desc">MV・PV・CM撮影に最適な車両を、<br>登録オーナーの中からご提案します。</p>
+        <span class="card-arrow">
+          制作会社の方はこちら
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+          </svg>
+        </span>
       </a>
     </div>
-    <div class="hero-scroll-hint" aria-hidden="true">
-      <span>Scroll</span>
-      <div class="line"></div>
-    </div>
-  </section>
-
-  <!-- ========== Concept ========== -->
-  <section class="concept" id="concept">
-    <div class="container">
-      <div class="fade-in">
-        <span class="section-label">Concept</span>
-        <h2 class="section-title">クリエイティブの主役に、<br>あなたのクルマを。</h2>
-        <p class="section-subtitle">
-          JDM、カスタムカー、スポーツカー、旧車——。<br>
-          こだわり抜いた一台には、それだけで人を魅了する力がある。<br><br>
-          CARSTINGは、MV・PV を制作する映像クリエイターと、<br>
-          「自慢の愛車を作品に残したい」カーオーナーをつなぐ、<br>
-          新しいマッチングサービスです。
-        </p>
-        <div class="concept-visual-line"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== Merits ========== -->
-  <section class="merits" id="merits">
-    <div class="container">
-      <div class="merits-header fade-in">
-        <span class="section-label">Merit</span>
-        <h2 class="section-title">オーナー登録、3つのメリット</h2>
-      </div>
-      <div class="merits-grid">
-
-        <!-- Merit 1 -->
-        <div class="merit-card fade-in" data-delay="0">
-          <div class="merit-icon">
-            <img src="assets/images/merit-film.png" alt="" width="72" height="72">
-          </div>
-          <span class="merit-number">Merit 01</span>
-          <h3 class="merit-title">プロの映像作品に<br>愛車が残る</h3>
-          <p class="merit-description">
-            アーティストのMVやブランドPVに、あなたの愛車が出演。プロの手で撮られた映像は、一生モノの実績として残ります。
-          </p>
-        </div>
-
-        <!-- Merit 2 -->
-        <div class="merit-card fade-in" data-delay="1">
-          <div class="merit-icon">
-            <img src="assets/images/merit-money.png" alt="" width="72" height="72">
-          </div>
-          <span class="merit-number">Merit 02</span>
-          <h3 class="merit-title">空き時間で<br>副収入を得られる</h3>
-          <p class="merit-description">
-            撮影協力に対して謝礼金をお支払い。愛車の維持費の足しに。稼働はあなたのスケジュール次第です。
-          </p>
-        </div>
-
-        <!-- Merit 3 -->
-        <div class="merit-card fade-in" data-delay="2">
-          <div class="merit-icon">
-            <img src="assets/images/merit-shield.png" alt="" width="72" height="72">
-          </div>
-          <span class="merit-number">Merit 03</span>
-          <h3 class="merit-title">仲介で安心、<br>トラブル回避</h3>
-          <p class="merit-description">
-            制作会社との直接取引ではなく、CARSTINGが間に入って条件調整・契約をサポート。初めてでも安心です。
-          </p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== Flow ========== -->
-  <section class="flow" id="flow">
-    <div class="container">
-      <div class="flow-header fade-in">
-        <span class="section-label">Flow</span>
-        <h2 class="section-title">マッチングから撮影までの流れ</h2>
-      </div>
-      <div class="flow-timeline">
-
-        <div class="flow-step fade-in" data-delay="0">
-          <div class="flow-step-dot"></div>
-          <span class="flow-step-number">Step 01</span>
-          <h3 class="flow-step-title">スマホで簡単エントリー</h3>
-          <p class="flow-step-description">フォームから車両の写真と基本情報を登録。最短1分で完了します。</p>
-        </div>
-
-        <div class="flow-step fade-in" data-delay="1">
-          <div class="flow-step-dot"></div>
-          <span class="flow-step-number">Step 02</span>
-          <h3 class="flow-step-title">オファーを待つ</h3>
-          <p class="flow-step-description">登録情報をもとに、映像制作会社からリクエストが届いたらCARSTINGがご連絡します。</p>
-        </div>
-
-        <div class="flow-step fade-in" data-delay="2">
-          <div class="flow-step-dot"></div>
-          <span class="flow-step-number">Step 03</span>
-          <h3 class="flow-step-title">条件のすり合わせ</h3>
-          <p class="flow-step-description">撮影日程、場所、謝礼金などの条件をCARSTINGが調整。納得の上で進めます。</p>
-        </div>
-
-        <div class="flow-step fade-in" data-delay="3">
-          <div class="flow-step-dot"></div>
-          <span class="flow-step-number">Step 04</span>
-          <h3 class="flow-step-title">撮影当日</h3>
-          <p class="flow-step-description">撮影現場へ愛車と一緒に。立ち会い推奨で、安心して見届けられます。</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ========== CTA + Form ========== -->
-  <section class="cta-section" id="cta">
-    <div class="cta-inner fade-in">
-      <span class="section-label">Entry</span>
-      <h2 class="section-title">まずは無料で<br>車両をエントリー。</h2>
-      <p class="cta-description">あなたの愛車を、次の作品へ。<br>登録は1分、費用は一切かかりません。</p>
-
-      <form class="reg-form" id="registration-form" novalidate>
-        <p class="form-title">無料オーナー登録フォーム</p>
-
-        <div class="form-group">
-          <label class="form-label" for="owner-name">お名前<span class="required">*</span></label>
-          <input type="text" class="form-input" id="owner-name" name="name" placeholder="山田 太郎" autocomplete="name"
-            required>
-          <p class="form-error-msg">お名前を入力してください</p>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="owner-contact">連絡先（電話番号 or メール）<span class="required">*</span></label>
-          <input type="text" class="form-input" id="owner-contact" name="contact"
-            placeholder="090-xxxx-xxxx or email@example.com" autocomplete="email tel" required>
-          <p class="form-error-msg">連絡先を入力してください</p>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="car-model">車種・年式<span class="required">*</span></label>
-          <input type="text" class="form-input" id="car-model" name="car_model" placeholder="例：日産 シルビア S15 (2000年式)"
-            required>
-          <p class="form-error-msg">車種を入力してください</p>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="car-photo">愛車の写真</label>
-          <div class="file-upload">
-            <div class="file-upload-area" id="file-upload-area">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="17 8 12 3 7 8" />
-                <line x1="12" y1="3" x2="12" y2="15" />
-              </svg>
-              <p class="upload-text"><strong>タップして写真を選択</strong></p>
-              <p class="upload-hint">JPG, PNG — 最大10MB</p>
-            </div>
-            <input type="file" id="car-photo" name="car_photo" accept="image/*">
-            <p class="file-name" style="display:none;"></p>
-          </div>
-        </div>
-
-        <button type="submit" class="submit-btn" id="submit-btn">
-          無料でエントリーする
-        </button>
-
-
-      </form>
-    </div>
-  </section>
-
-  <!-- ========== Footer ========== -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-logo"><img src="assets/images/logo.png" alt="CARSTING"></div>
-      <nav class="footer-links">
-        <a href="terms.html">利用規約</a>
-        <a href="privacy.html">プライバシーポリシー</a>
-        <a href="tokushou.html">特定商取引法に基づく表記</a>
-        <a href="#">お問い合わせ</a>
-      </nav>
-      <p class="footer-copy">&copy; 2026 CARSTING Inc. All rights reserved.</p>
-    </div>
-  </footer>
-
-  <!-- ========== Success Modal ========== -->
-  <div class="modal-overlay" id="success-modal" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
-    <div class="modal-content">
-      <div class="modal-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-          stroke-linejoin="round">
-          <polyline points="20 6 9 17 4 12" />
-        </svg>
-      </div>
-      <h3 class="modal-title" id="modal-heading">エントリー完了！</h3>
-      <p class="modal-text">ご登録ありがとうございます。<br>オファーが届き次第、ご連絡いたします。</p>
-      <button class="modal-close-btn" id="modal-close-btn">閉じる</button>
-    </div>
   </div>
-
-  <!-- Supabase (async so it doesn't block page scripts) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" async></script>
-  <script src="script.js" defer></script>
 </body>
 
 </html>
