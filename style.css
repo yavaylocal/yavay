@@ -239,7 +239,7 @@ a:hover {
   align-items: flex-end;
   justify-content: center;
   overflow: hidden;
-  padding: 0 20px 60px;
+  padding: 0 20px 100px;
 }
 
 .hero-bg {
@@ -343,7 +343,7 @@ a:hover {
 
 .hero-scroll-hint {
   position: absolute;
-  bottom: 20px;
+  bottom: 12px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1;
