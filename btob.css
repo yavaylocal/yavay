@@ -154,6 +154,8 @@
     position: relative;
     aspect-ratio: 16 / 10;
     overflow: hidden;
+    border-radius: var(--radius-md);
+    margin: 16px 16px 0;
 }
 
 .gallery-image img {
