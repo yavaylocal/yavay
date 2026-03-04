@@ -85,19 +85,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 64px;
-    height: 64px;
+    width: 80px;
+    height: 80px;
     margin: 0 auto 16px;
-    border-radius: 50%;
-    background: rgba(0, 229, 255, 0.06);
-    border: 1px solid rgba(0, 229, 255, 0.2);
-    box-shadow: 0 0 24px rgba(0, 229, 255, 0.1);
 }
 
-.problem-icon svg {
-    width: 26px;
-    height: 26px;
-    color: var(--accent-cyan);
+.problem-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .problem-item p {
