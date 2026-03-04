@@ -1,5 +1,5 @@
 /* ================================================
-   YAVAY - Interactive Logic & Backend Integration
+   CARSTING - Interactive Logic & Backend Integration
    ================================================ */
 
 // Supabase Configuration
