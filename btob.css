@@ -182,7 +182,6 @@
     position: relative;
     aspect-ratio: 16 / 10;
     overflow: hidden;
-    height: 100%;
 }
 
 .gallery-image img {
