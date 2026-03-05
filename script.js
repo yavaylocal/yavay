@@ -114,6 +114,8 @@ function initFileUpload() {
   const fileInput = document.getElementById('car-photo');
   const uploadArea = document.querySelector('.file-upload-area');
   const fileNameEl = document.querySelector('.file-name');
+  const fileInfoEl = document.querySelector('.file-info');
+  const clearBtn = document.getElementById('file-clear-btn');
 
   if (!fileInput || !uploadArea) return;
 
@@ -121,18 +123,26 @@ function initFileUpload() {
     if (fileInput.files.length > 0) {
       const name = fileInput.files[0].name;
       uploadArea.classList.add('has-file');
-      if (fileNameEl) {
-        fileNameEl.textContent = '✓ ' + name;
-        fileNameEl.style.display = 'block';
-      }
+      if (fileNameEl) fileNameEl.textContent = '✓ ' + name;
+      if (fileInfoEl) fileInfoEl.style.display = 'flex';
     } else {
-      uploadArea.classList.remove('has-file');
-      if (fileNameEl) {
-        fileNameEl.textContent = '';
-        fileNameEl.style.display = 'none';
-      }
+      resetFileUpload();
     }
   });
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      resetFileUpload();
+    });
+  }
+
+  function resetFileUpload() {
+    fileInput.value = '';
+    uploadArea.classList.remove('has-file');
+    if (fileNameEl) fileNameEl.textContent = '';
+    if (fileInfoEl) fileInfoEl.style.display = 'none';
+  }
 }
 
 /* ---------- Image Compression Logic ---------- */
@@ -308,8 +318,10 @@ function initFormValidation() {
       // Reset file upload UI
       const uploadArea = document.querySelector('.file-upload-area');
       const fileNameEl = document.querySelector('.file-name');
+      const fileInfoEl = document.querySelector('.file-info');
       if (uploadArea) uploadArea.classList.remove('has-file');
-      if (fileNameEl) { fileNameEl.textContent = ''; fileNameEl.style.display = 'none'; }
+      if (fileNameEl) fileNameEl.textContent = '';
+      if (fileInfoEl) fileInfoEl.style.display = 'none';
 
     } catch (error) {
       console.error('Submission error:', error);
