@@ -14,6 +14,10 @@ CREATE TABLE IF NOT EXISTS public.owners (
     name TEXT NOT NULL,
     contact TEXT NOT NULL,
     car_model TEXT NOT NULL,
+    car_genre TEXT NOT NULL,
+    car_color TEXT NOT NULL,
+    instagram_id TEXT,
+    custom_features TEXT,
     car_photo_url TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
