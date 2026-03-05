@@ -14,16 +14,21 @@ CREATE TABLE IF NOT EXISTS public.owners (
     name TEXT NOT NULL,
     contact TEXT NOT NULL,
     car_model TEXT NOT NULL,
-    car_genre TEXT NOT NULL,
-    car_color TEXT NOT NULL,
-    instagram_id TEXT,
-    custom_features TEXT,
     car_photo_url TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
+-- 追加カラム（すでにテーブルがある場合でもエラーにならないように追加）
+ALTER TABLE public.owners ADD COLUMN IF NOT EXISTS car_genre TEXT;
+ALTER TABLE public.owners ADD COLUMN IF NOT EXISTS car_color TEXT;
+ALTER TABLE public.owners ADD COLUMN IF NOT EXISTS instagram_id TEXT;
+ALTER TABLE public.owners ADD COLUMN IF NOT EXISTS custom_features TEXT;
+
 -- RLS (Row Level Security) の設定
 ALTER TABLE public.owners ENABLE ROW LEVEL SECURITY;
+
+-- 既存のポリシーがあれば一旦削除（何度も実行してエラーになるのを防ぐため）
+DROP POLICY IF EXISTS "Enable insert for anonymous users" ON public.owners;
 
 -- 「匿名ユーザー（誰でも）がデータを追加できる（セキュリティポリシー）」
 CREATE POLICY "Enable insert for anonymous users"
@@ -43,8 +48,10 @@ CREATE TABLE IF NOT EXISTS public.inquiries (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
--- RLS (Row Level Security) の設定
+-- RLS の設定
 ALTER TABLE public.inquiries ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Enable insert for anonymous users" ON public.inquiries;
 
 -- 「匿名ユーザー（誰でも）がデータを追加できる（セキュリティポリシー）」
 CREATE POLICY "Enable insert for anonymous users"
@@ -60,7 +67,10 @@ INSERT INTO storage.buckets (id, name, public)
 VALUES ('car-images', 'car-images', true)
 ON CONFLICT (id) DO NOTHING;
 
--- RLS (Row Level Security) の設定
+-- ポリシーがあれば削除
+DROP POLICY IF EXISTS "Allow public upload for car images" ON storage.objects;
+DROP POLICY IF EXISTS "Allow public read for car images" ON storage.objects;
+
 -- バケットへの画像アップロードを誰にでも許可する
 CREATE POLICY "Allow public upload for car images"
     ON storage.objects FOR INSERT
