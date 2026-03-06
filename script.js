@@ -373,31 +373,74 @@ function initFaq() {
   });
 }
 
-/* ---------- Gallery Drag to Scroll ---------- */
+/* ---------- Gallery Infinite Loop Scroll ---------- */
 function initGalleryScroll() {
   const gallery = document.querySelector('.gallery-grid');
   if (!gallery) return;
 
+  const cards = Array.from(gallery.children);
+  if (cards.length === 0) return;
+
+  // Clone all cards and append for seamless looping
+  cards.forEach((card) => {
+    const clone = card.cloneNode(true);
+    gallery.appendChild(clone);
+  });
+
+  // Calculate the width of the original set of cards
+  const gap = 16;
+  const cardWidth = cards[0].offsetWidth;
+  const originalWidth = cards.length * (cardWidth + gap);
+
+  // Start scrolled to the beginning
+  gallery.scrollLeft = 0;
+
+  // Monitor scroll for infinite loop
+  let isChecking = false;
+  gallery.addEventListener('scroll', () => {
+    if (isChecking) return;
+    isChecking = true;
+    requestAnimationFrame(() => {
+      // If scrolled past the original set, jump back
+      if (gallery.scrollLeft >= originalWidth) {
+        gallery.style.scrollBehavior = 'auto';
+        gallery.scrollLeft -= originalWidth;
+        gallery.style.scrollBehavior = 'smooth';
+      }
+      // If scrolled before the start, jump to end
+      if (gallery.scrollLeft <= 0) {
+        gallery.style.scrollBehavior = 'auto';
+        gallery.scrollLeft += originalWidth;
+        gallery.style.scrollBehavior = 'smooth';
+      }
+      isChecking = false;
+    });
+  });
+
+  // Mouse drag to scroll (desktop)
   let isDown = false;
   let startX;
   let scrollLeft;
 
   gallery.addEventListener('mousedown', (e) => {
     isDown = true;
+    gallery.classList.add('dragging');
     gallery.style.cursor = 'grabbing';
+    gallery.style.scrollBehavior = 'auto';
     startX = e.pageX - gallery.offsetLeft;
     scrollLeft = gallery.scrollLeft;
   });
 
-  gallery.addEventListener('mouseleave', () => {
+  const stopDrag = () => {
+    if (!isDown) return;
     isDown = false;
+    gallery.classList.remove('dragging');
     gallery.style.cursor = 'grab';
-  });
+    gallery.style.scrollBehavior = 'smooth';
+  };
 
-  gallery.addEventListener('mouseup', () => {
-    isDown = false;
-    gallery.style.cursor = 'grab';
-  });
+  gallery.addEventListener('mouseleave', stopDrag);
+  gallery.addEventListener('mouseup', stopDrag);
 
   gallery.addEventListener('mousemove', (e) => {
     if (!isDown) return;
@@ -407,7 +450,6 @@ function initGalleryScroll() {
     gallery.scrollLeft = scrollLeft - walk;
   });
 
-  // Set initial cursor state
   gallery.style.cursor = 'grab';
 }
 
