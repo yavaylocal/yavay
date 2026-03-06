@@ -86,34 +86,18 @@
     background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.15), transparent);
 }
 
-/* ---------- Marquee Animation ---------- */
-@keyframes scrollGallery {
-    0% {
-        transform: translateX(0);
-    }
-
-    100% {
-        transform: translateX(calc(-250px * 7 - 16px * 7));
-        /* card width * num items + gap * num items */
-    }
-}
-
+/* ---------- Gallery Swipeable Carousel ---------- */
 .gallery-wrapper {
     width: 100%;
     position: relative;
     padding: 20px 0 40px;
-    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    overflow: hidden;
 }
 
 .gallery-grid {
     display: flex;
     gap: 16px;
-    width: max-content;
-    padding: 0 10vw;
-    animation: scrollGallery 40s linear infinite;
-
-    /* Touch swipe support */
+    padding: 0 20px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
@@ -121,18 +105,11 @@
 
     /* Hide scrollbar */
     scrollbar-width: none;
-    /* Firefox */
     -ms-overflow-style: none;
-    /* IE/Edge */
 }
 
 .gallery-grid::-webkit-scrollbar {
     display: none;
-    /* Chrome/Safari */
-}
-
-.gallery-grid:hover {
-    animation-play-state: paused;
 }
 
 .gallery-card {
@@ -143,8 +120,6 @@
     border-radius: var(--radius-md);
     overflow: hidden;
     transition: border-color var(--transition-base), transform var(--transition-fast);
-
-    /* Scroll snap points */
     scroll-snap-align: center;
 }
 

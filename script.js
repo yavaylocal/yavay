@@ -385,8 +385,6 @@ function initGalleryScroll() {
   gallery.addEventListener('mousedown', (e) => {
     isDown = true;
     gallery.style.cursor = 'grabbing';
-    // Pause CSS animation when interacting
-    gallery.style.animationPlayState = 'paused';
     startX = e.pageX - gallery.offsetLeft;
     scrollLeft = gallery.scrollLeft;
   });
@@ -394,20 +392,18 @@ function initGalleryScroll() {
   gallery.addEventListener('mouseleave', () => {
     isDown = false;
     gallery.style.cursor = 'grab';
-    gallery.style.animationPlayState = 'running';
   });
 
   gallery.addEventListener('mouseup', () => {
     isDown = false;
     gallery.style.cursor = 'grab';
-    gallery.style.animationPlayState = 'running';
   });
 
   gallery.addEventListener('mousemove', (e) => {
     if (!isDown) return;
     e.preventDefault();
     const x = e.pageX - gallery.offsetLeft;
-    const walk = (x - startX) * 2; // Scroll-fast multiplier
+    const walk = (x - startX) * 2;
     gallery.scrollLeft = scrollLeft - walk;
   });
 
